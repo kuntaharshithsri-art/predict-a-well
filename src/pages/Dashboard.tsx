@@ -107,7 +107,7 @@ const Dashboard = () => {
               <div className="p-2 health-gradient rounded-xl">
                 <Heart className="w-6 h-6 text-primary-foreground" />
               </div>
-              <span className="text-xl font-display font-bold text-foreground">HealthPredict</span>
+              <span className="text-xl font-display font-bold text-foreground">NEXTGEn Health Predictor</span>
             </div>
 
             <nav className="hidden md:flex items-center gap-6">
