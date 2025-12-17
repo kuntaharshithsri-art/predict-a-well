@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { 
   Heart, Activity, Droplets, Gauge, 
   Bell, TrendingUp, User, LogOut, 
-  ChevronRight, Stethoscope, AlertCircle,
-  CheckCircle, Clock, Zap
+  ChevronRight, Stethoscope, 
+  CheckCircle, Zap, Settings
 } from "lucide-react";
 import { toast } from "sonner";
 import HealthMetricCard from "@/components/HealthMetricCard";
@@ -13,12 +13,17 @@ import HealthTestPanel from "@/components/HealthTestPanel";
 import HealthScoreRing from "@/components/HealthScoreRing";
 import RecommendationCard from "@/components/RecommendationCard";
 import RemindersList from "@/components/RemindersList";
+import QuickStats from "@/components/QuickStats";
+import WeeklyActivityChart from "@/components/WeeklyActivityChart";
+import AIHealthInsight from "@/components/AIHealthInsight";
+import UpcomingAppointments from "@/components/UpcomingAppointments";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
   const [healthScore, setHealthScore] = useState(78);
   const [showTestPanel, setShowTestPanel] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     const storedUser = localStorage.getItem("healthUser");
@@ -27,12 +32,23 @@ const Dashboard = () => {
       return;
     }
     setUser(JSON.parse(storedUser));
+
+    // Update time every minute
+    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+    return () => clearInterval(timer);
   }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("healthUser");
     toast.success("Logged out successfully");
     navigate("/auth");
+  };
+
+  const getGreeting = () => {
+    const hour = currentTime.getHours();
+    if (hour < 12) return "Good Morning";
+    if (hour < 17) return "Good Afternoon";
+    return "Good Evening";
   };
 
   const metrics = [
@@ -100,17 +116,20 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-card border-b border-border sticky top-0 z-50">
+      <header className="bg-card/95 backdrop-blur-lg border-b border-border sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2 health-gradient rounded-xl">
+              <div className="p-2 health-gradient rounded-xl shadow-md">
                 <Heart className="w-6 h-6 text-primary-foreground" />
               </div>
-              <span className="text-xl font-display font-bold text-foreground">NEXTGEn Health Predictor</span>
+              <div>
+                <span className="text-xl font-display font-bold text-foreground">NextGen Health Predictor</span>
+                <p className="text-xs text-muted-foreground hidden sm:block">AI-Powered Health Intelligence</p>
+              </div>
             </div>
 
-            <nav className="hidden md:flex items-center gap-6">
+            <nav className="hidden lg:flex items-center gap-6">
               <button className="text-foreground font-medium flex items-center gap-2 hover:text-primary transition-colors">
                 <Activity className="w-4 h-4" /> Dashboard
               </button>
@@ -120,20 +139,26 @@ const Dashboard = () => {
               >
                 <User className="w-4 h-4" /> Profile
               </button>
+              <button className="text-muted-foreground font-medium flex items-center gap-2 hover:text-primary transition-colors">
+                <Settings className="w-4 h-4" /> Settings
+              </button>
             </nav>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="w-5 h-5" />
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-destructive rounded-full text-[10px] text-destructive-foreground flex items-center justify-center">3</span>
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-destructive rounded-full text-[10px] text-destructive-foreground flex items-center justify-center font-bold animate-pulse">3</span>
               </Button>
-              <div className="hidden md:flex items-center gap-3 pl-4 border-l border-border">
-                <div className="w-9 h-9 rounded-full health-gradient flex items-center justify-center text-primary-foreground font-semibold">
+              <div className="hidden md:flex items-center gap-3 pl-3 border-l border-border">
+                <div className="w-10 h-10 rounded-full health-gradient flex items-center justify-center text-primary-foreground font-bold shadow-md">
                   {user.name.charAt(0).toUpperCase()}
                 </div>
-                <span className="font-medium text-foreground">{user.name}</span>
+                <div className="hidden lg:block">
+                  <p className="font-medium text-foreground text-sm">{user.name}</p>
+                  <p className="text-xs text-muted-foreground">{user.email}</p>
+                </div>
               </div>
-              <Button variant="ghost" size="icon" onClick={handleLogout}>
+              <Button variant="ghost" size="icon" onClick={handleLogout} className="text-muted-foreground hover:text-destructive">
                 <LogOut className="w-5 h-5" />
               </Button>
             </div>
@@ -142,51 +167,52 @@ const Dashboard = () => {
       </header>
 
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-6 lg:py-8">
         {/* Welcome Section */}
-        <div className="mb-8 animate-slide-up">
-          <h1 className="text-3xl font-display font-bold text-foreground mb-2">
-            Good Morning, {user.name.split(" ")[0]}! 👋
-          </h1>
-          <p className="text-muted-foreground text-lg">
-            Here's your health overview for today
-          </p>
+        <div className="mb-6 animate-slide-up">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-2xl lg:text-3xl font-display font-bold text-foreground mb-1">
+                {getGreeting()}, {user.name.split(" ")[0]}! 👋
+              </h1>
+              <p className="text-muted-foreground">
+                {currentTime.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+              </p>
+            </div>
+            <Button variant="gradient" onClick={() => setShowTestPanel(true)} className="shrink-0">
+              <Stethoscope className="w-5 h-5" />
+              Quick Health Test
+            </Button>
+          </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        {/* Quick Stats Row */}
+        <QuickStats />
+
+        <div className="grid lg:grid-cols-3 gap-6 mt-6">
           {/* Left Column */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Health Score & Test Button */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Health Score & AI Insights Row */}
             <div className="grid md:grid-cols-2 gap-6">
               <HealthScoreRing score={healthScore} />
-              
-              <div className="bg-card rounded-2xl p-6 card-shadow animate-slide-up" style={{ animationDelay: "0.1s" }}>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-2 bg-primary/10 rounded-xl">
-                    <Stethoscope className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-display font-semibold text-foreground">Quick Health Test</h3>
-                </div>
-                <p className="text-muted-foreground mb-6">
-                  Enter your current vitals to get an instant health prediction powered by ML algorithms.
-                </p>
-                <Button 
-                  variant="gradient" 
-                  className="w-full"
-                  onClick={() => setShowTestPanel(true)}
-                >
-                  <Zap className="w-5 h-5" />
-                  Start Health Test
-                </Button>
-              </div>
+              <AIHealthInsight />
             </div>
 
             {/* Health Metrics Grid */}
-            <div className="grid sm:grid-cols-2 gap-4">
-              {metrics.map((metric, index) => (
-                <HealthMetricCard key={metric.title} {...metric} delay={index * 0.1} />
-              ))}
+            <div>
+              <h2 className="text-lg font-display font-semibold text-foreground mb-4 flex items-center gap-2">
+                <Activity className="w-5 h-5 text-primary" />
+                Vital Signs Overview
+              </h2>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {metrics.map((metric, index) => (
+                  <HealthMetricCard key={metric.title} {...metric} delay={index * 0.1} />
+                ))}
+              </div>
             </div>
+
+            {/* Weekly Activity Chart */}
+            <WeeklyActivityChart />
 
             {/* Recommendations */}
             <div className="bg-card rounded-2xl p-6 card-shadow animate-slide-up" style={{ animationDelay: "0.4s" }}>
@@ -195,7 +221,7 @@ const Dashboard = () => {
                   <div className="p-2 bg-success/10 rounded-xl">
                     <TrendingUp className="w-6 h-6 text-success" />
                   </div>
-                  <h3 className="font-display font-semibold text-foreground text-lg">Health Recommendations</h3>
+                  <h3 className="font-display font-semibold text-foreground text-lg">Personalized Recommendations</h3>
                 </div>
                 <Button variant="ghost" size="sm">
                   View All <ChevronRight className="w-4 h-4" />
@@ -209,9 +235,34 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Right Column - Reminders */}
+          {/* Right Column */}
           <div className="space-y-6">
+            {/* Quick Test Card */}
+            <div className="bg-gradient-to-br from-primary/10 via-info/5 to-success/10 rounded-2xl p-6 border border-primary/20 animate-slide-up" style={{ animationDelay: "0.1s" }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 health-gradient rounded-xl">
+                  <Zap className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <h3 className="font-display font-semibold text-foreground">ML Health Analysis</h3>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Enter your vitals for instant AI-powered health predictions and risk assessment.
+              </p>
+              <Button 
+                variant="gradient" 
+                className="w-full"
+                onClick={() => setShowTestPanel(true)}
+              >
+                <Stethoscope className="w-5 h-5" />
+                Start Analysis
+              </Button>
+            </div>
+
+            {/* Reminders */}
             <RemindersList />
+
+            {/* Upcoming Appointments */}
+            <UpcomingAppointments />
           </div>
         </div>
       </main>
