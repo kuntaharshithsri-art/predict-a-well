@@ -36,7 +36,7 @@ const AuthPage = () => {
               <div className="p-3 bg-primary-foreground/20 rounded-2xl backdrop-blur-sm">
                 <Heart className="w-10 h-10" />
               </div>
-              <span className="text-3xl font-display font-bold">NEXTGEn Health Predictor</span>
+              <span className="text-3xl font-display font-bold">NextGen Health Predictor</span>
             </div>
             
             <h1 className="text-4xl lg:text-5xl font-display font-bold mb-6 leading-tight">
@@ -77,7 +77,7 @@ const AuthPage = () => {
             <div className="p-3 health-gradient rounded-2xl">
               <Heart className="w-8 h-8 text-primary-foreground" />
             </div>
-            <span className="text-2xl font-display font-bold text-foreground">NEXTGEn Health Predictor</span>
+            <span className="text-2xl font-display font-bold text-foreground">NextGen Health Predictor</span>
           </div>
 
           <div className="bg-card rounded-2xl p-8 card-shadow">
