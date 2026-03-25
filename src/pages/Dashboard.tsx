@@ -5,7 +5,8 @@ import {
   Heart, Activity, Droplets, Gauge, 
   Bell, TrendingUp, User, LogOut, 
   ChevronRight, Stethoscope, 
-  CheckCircle, Zap, Settings
+  CheckCircle, Zap, Settings,
+  LayoutDashboard, FileText, Calendar, Home
 } from "lucide-react";
 import { toast } from "sonner";
 import HealthMetricCard from "@/components/HealthMetricCard";
