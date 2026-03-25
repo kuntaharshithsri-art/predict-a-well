@@ -41,7 +41,7 @@ const Index = () => {
               <div className="p-2 health-gradient rounded-xl">
                 <Heart className="w-6 h-6 text-primary-foreground" />
               </div>
-              <span className="text-xl font-display font-bold text-foreground">NextGen Health Predictor</span>
+              <span className="text-xl font-display font-bold text-foreground">Data-Driven Health Predictor</span>
             </div>
             <Button variant="gradient" onClick={() => navigate("/auth")}>
               Get Started <ArrowRight className="w-4 h-4" />
@@ -213,10 +213,10 @@ const Index = () => {
         <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <Heart className="w-5 h-5 text-primary" />
-            <span className="font-display font-semibold text-foreground">NextGen Health Predictor</span>
+            <span className="font-display font-semibold text-foreground">Data-Driven Health Predictor</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            © 2024 NextGen Health Predictor. All rights reserved.
+            © 2024 Data-Driven Health Predictor. All rights reserved.
           </p>
         </div>
       </footer>

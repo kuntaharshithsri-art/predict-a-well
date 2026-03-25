@@ -124,7 +124,7 @@ const Dashboard = () => {
                 <Heart className="w-6 h-6 text-primary-foreground" />
               </div>
               <div>
-                <span className="text-xl font-display font-bold text-foreground">NextGen Health Predictor</span>
+                <span className="text-xl font-display font-bold text-foreground">Data-Driven Health Predictor</span>
                 <p className="text-xs text-muted-foreground hidden sm:block">AI-Powered Health Intelligence</p>
               </div>
             </div>
