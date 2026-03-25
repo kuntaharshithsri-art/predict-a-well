@@ -145,12 +145,31 @@ const Dashboard = () => {
               </button>
             </nav>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 sm:gap-2">
+              <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-muted-foreground hover:text-primary" onClick={() => navigate("/")}>
+                <Home className="w-4 h-4" />
+                <span className="hidden md:inline ml-1">Home</span>
+              </Button>
+              <Button variant="ghost" size="sm" className="text-foreground hover:text-primary" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                <LayoutDashboard className="w-4 h-4" />
+                <span className="hidden md:inline ml-1">Dashboard</span>
+              </Button>
+              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary" onClick={() => navigate("/profile")}>
+                <User className="w-4 h-4" />
+                <span className="hidden md:inline ml-1">Profile</span>
+              </Button>
+              <Button variant="ghost" size="sm" className="hidden sm:inline-flex text-muted-foreground hover:text-primary" onClick={() => setShowTestPanel(true)}>
+                <Stethoscope className="w-4 h-4" />
+                <span className="hidden md:inline ml-1">Test</span>
+              </Button>
+
+              <div className="w-px h-6 bg-border mx-1" />
+
               <Button variant="ghost" size="icon" className="relative">
                 <Bell className="w-5 h-5" />
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-destructive rounded-full text-[10px] text-destructive-foreground flex items-center justify-center font-bold animate-pulse">3</span>
               </Button>
-              <div className="hidden md:flex items-center gap-3 pl-3 border-l border-border">
+              <div className="hidden md:flex items-center gap-3 pl-2 border-l border-border">
                 <div className="w-10 h-10 rounded-full health-gradient flex items-center justify-center text-primary-foreground font-bold shadow-md">
                   {user.name.charAt(0).toUpperCase()}
                 </div>
